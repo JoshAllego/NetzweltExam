@@ -97,8 +97,7 @@ namespace Exam.Controllers
 
                     mainTerritories.Add(m1);
                 }
-                var ppd = mainTerritories.Where(a => a.Name == "CALABARZON").ToList();
-
+                
                 _res = new JsonResult(mainTerritories);
             }
             catch (Exception)

@@ -1,8 +1,22 @@
 ﻿<div id="app">
     Welcome
+    <div>Here are the list of territories</div>
+    <div > 
+        <ul v-for="i in territories">
+            <li>
+                <span>{{i.name}}</span>
 
-    <div v-for="i in territories">
+                <ul v-for="o in i.subTerritories">
+                    <li>
+                        <span>{{o.name}}</span>
+                        <ul v-for="j in o.subTerritories">
+                           <li>{{j}}</li>
+                        </ul>
+                    </li>
 
+                </ul>
+            </li>
+        </ul>
     </div>
 </div>
 
@@ -13,13 +27,13 @@
     data:{
         territories:[]
     },
-    created: async function(){
-       
+    async created(){
+         await this.getTerritories()
     },
     methods:{
         getTerritories: async function(){
-           
-        }
+                this.territories = await fetch(window.location.protocol + '//' + window.location.host  + '/Home/GetData' ).then(a => a.json())
+            }
     }
     })
 </script>
