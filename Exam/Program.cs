@@ -1,17 +1,19 @@
 using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(builder =>
-    {
-        builder.WithOrigins("https://localhost:7092/")
-        .AllowAnyMethod()
-        .AllowAnyHeader();
-    });
+     
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                     policy =>
+                     {
+                         policy.WithOrigins("https://localhost:7092/",
+                                             "http://www.contoso.com"); // add the allowed origins  
+                     });
 });
 var app = builder.Build();
 
@@ -28,7 +30,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthorization();
 

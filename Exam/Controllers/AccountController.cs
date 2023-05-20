@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 
 namespace Exam.Controllers
@@ -10,7 +11,7 @@ namespace Exam.Controllers
     {
 
         string signInEndPoint = @"https://netzwelt-devtest.azurewebsites.net/Account/SignIn";
-        string getTerritoriesEndPoint = @"https://netzwelt-devtest.azurewebsites.net/Territories/GetAll";
+       
 
         public IActionResult Index()
         {
@@ -37,14 +38,17 @@ namespace Exam.Controllers
                 var _response = await _client.PostAsync(signInEndPoint, _stringContent);
                 _responseModel = await _response.Content.ReadFromJsonAsync<LogInResponseModel>();
 
-                if(_responseModel != null)
-                {
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    return RedirectToAction("Index", "Account");
-                }
+               
+
+                    if (_responseModel != null)
+                    {
+                        
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Account");
+                    }
                  
             }
             catch (Exception)
