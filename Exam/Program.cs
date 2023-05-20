@@ -5,16 +5,16 @@ var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddCors(options =>
-{
+//builder.Services.AddCors(options =>
+//{
      
-    options.AddPolicy(name: MyAllowSpecificOrigins,
-                     policy =>
-                     {
-                         policy.WithOrigins("https://localhost:7092/",
-                                             "http://www.contoso.com"); // add the allowed origins  
-                     });
-});
+//    options.AddPolicy(name: MyAllowSpecificOrigins,
+//                     policy =>
+//                     {
+//                         policy.WithOrigins("https://localhost:7092/",
+//                                             "http://www.contoso.com"); // add the allowed origins  
+//                     });
+//});
 
 
 //Session service added
