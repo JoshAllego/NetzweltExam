@@ -13,7 +13,8 @@ namespace Exam.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        
+        string getTerritoriesEndPoint = @"https://netzwelt-devtest.azurewebsites.net/Territories/All";
+
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -43,8 +44,7 @@ namespace Exam.Controllers
             return View();
         }
 
-        string getTerritoriesEndPoint = @"https://netzwelt-devtest.azurewebsites.net/Territories/All";
-
+        
 
         [HttpGet]
        public async Task<JsonResult> GetData()
@@ -52,7 +52,8 @@ namespace Exam.Controllers
             JsonResult _res = null; 
             try
             {
-                if (!ModelState.IsValid) { throw new Exception("Model is empty!"); };
+                if (string.IsNullOrEmpty(HttpContext.Session.GetString(SessionModel.Name))) throw new Exception("Session expired!");
+                    if (!ModelState.IsValid) { throw new Exception("Model is empty!"); };
                  
                 HttpClientHandler _handler = new HttpClientHandler();
                 _handler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPoloc) => { return true; };
@@ -108,10 +109,10 @@ namespace Exam.Controllers
                 
                 _res = new JsonResult(mainTerritories);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                _res = new JsonResult(ex.Message);
             }
 
             return _res;
