@@ -32,6 +32,14 @@ namespace Exam.Controllers
 
         public IActionResult Index()
         {
+            try
+            {
+                if (string.IsNullOrEmpty(HttpContext.Session.GetString(SessionModel.Name))) throw new Exception("Session expired");
+            }
+            catch(Exception ex)
+            {
+                return RedirectToAction("Index", "Account");
+            }
             return View();
         }
 

@@ -42,7 +42,10 @@ namespace Exam.Controllers
 
                     if (_responseModel != null)
                     {
-                        
+                    HttpContext.Session.Clear();
+                    HttpContext.Session.SetString(SessionModel.Name, _responseModel.userName);
+                        HttpContext.Session.SetString(SessionModel.Name, _responseModel.displayName);
+                        HttpContext.Session.SetString(SessionModel.Role, string.Join(",", _responseModel.roles));
                         return RedirectToAction("Index", "Home");
                     }
                     else
@@ -56,8 +59,7 @@ namespace Exam.Controllers
 
                 throw;
             }
-             
-            return View();
+              
         }
     }
 }
