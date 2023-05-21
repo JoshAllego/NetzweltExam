@@ -61,26 +61,10 @@ namespace Exam.Controllers
                 HttpClient _client = new HttpClient(_handler);
                 var _response = await _client.GetAsync(getTerritoriesEndPoint);
                 var ppe = @_response.Content.ReadAsStringAsync().Result.ToString();  
+ 
+                var territories = JsonConvert.DeserializeObject<Root>(ppe);
 
-                JObject de = JObject.Parse(ppe);
-                 
-                List<Territory> territories = new List<Territory>();
-
-
-                if(de["data"] != null)
-                {
-                    foreach (var i in de["data"])
-                    {
-                        territories.Add(new Territory
-                        {
-                            id = i["id"] != null ? i["id"].ToString() : "",
-                            name = i["name"] != null ? i["name"].ToString() : "".ToString(),
-                            parent = i["parent"] != null ? i["parent"].ToString() : "".ToString()
-                        });
-                    }
-                }
-                
-                var listOfMainTerritory = territories.Where(a => string.IsNullOrEmpty(a.parent)).Select(a => a.id).Distinct().ToList();
+                var listOfMainTerritory = territories.data.Where(a => string.IsNullOrEmpty(a.parent)).Select(a => a.id).Distinct().ToList();
 
 
                 List<MainTerritory> mainTerritories = new List<MainTerritory>();
@@ -88,15 +72,15 @@ namespace Exam.Controllers
                 foreach(var i in listOfMainTerritory)
                 {
                     var m1 = new MainTerritory();
-                    m1.Name = territories.Where(a => a.id == i).Select(a => a.name).FirstOrDefault();
+                    m1.Name = territories.data.Where(a => a.id == i).Select(a => a.name).FirstOrDefault();
 
-                    var mxx = territories.Where(a => a.parent == i).ToList();
+                    var mxx = territories.data.Where(a => a.parent == i).ToList();
                   
                     foreach(var j in mxx)
                     {
                         var m2 = new SubTerritory();
                         m2.Name = j.name;
-                        var mxm = territories.Where(a => a.parent == j.id).ToList();
+                        var mxm = territories.data.Where(a => a.parent == j.id).ToList();
                         foreach(var z in mxm)
                         {
                             m2.SubTerritories.Add(z.name);

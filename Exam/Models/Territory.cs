@@ -1,6 +1,13 @@
-﻿namespace Exam.Models
-{
-   
+﻿using Newtonsoft.Json;
+using System.Text.Json.Serialization;
+
+namespace Exam.Models
+{ 
+
+    public class Root
+    {
+        public Territory[] data { get; set; }
+    }
     public class Territory
     {
         public string? id { get; set; }
